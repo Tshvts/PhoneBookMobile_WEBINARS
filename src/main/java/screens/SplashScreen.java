@@ -2,7 +2,12 @@ package screens;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidElement;
+import org.openqa.selenium.By;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.io.IOException;
 
 public class SplashScreen extends BaseScreen
 {
@@ -18,5 +23,18 @@ public class SplashScreen extends BaseScreen
     public boolean validateVersion()
     {
        return versionApp.getText().equals("Version 1.0.0");
+    }
+
+    public void goToAuthScreen(int time)
+    {
+        try
+        {
+            new WebDriverWait(driver,time).until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout[1]/android.view.ViewGroup/android.widget.TextView")));
+        }
+
+        catch (Exception e)
+        {
+            System.out.println("Created exception");
+        }
     }
 }

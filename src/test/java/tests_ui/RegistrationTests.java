@@ -18,15 +18,14 @@ public class RegistrationTests extends AppiumConfig
     @Test
     public void positiveRegistrationTest()
     {
+        UserDtoLombok user = UserDtoLombok.builder()
+                .username(generateEmail(7))
+                .password("Password123!")
+                .build();
+        System.out.println(user.toString());
         authenticationScreen = new AuthenticationScreen(driver);
         new SplashScreen(driver).goToAuthScreen(3);
-        authenticationScreen.typeAuthenticationForm
-                (
-                        UserDtoLombok.builder()
-                        .username(generateEmail(7))
-                        .password("Password123!")
-                .build()
-                );
+        authenticationScreen.typeAuthenticationForm(user);
         authenticationScreen.clickBtnReg();
         Assert.assertTrue(new ContactsScreen(driver).validateHeader());
     }

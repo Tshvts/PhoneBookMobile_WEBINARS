@@ -1,7 +1,9 @@
 package screens;
 
 import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidElement;
+import io.appium.java_client.touch.offset.PointOption;
 import org.openqa.selenium.support.FindBy;
 
 public class ContactsScreen extends BaseScreen
@@ -21,6 +23,18 @@ public class ContactsScreen extends BaseScreen
     @FindBy(xpath = "hierarchy/android.widget.Toast")
     AndroidElement popUpMessage;
 
+    @FindBy(id = "com.sheygam.contactapp:id/rowContainer")
+    AndroidElement firstContact;
+
+    @FindBy(id = "android:id/button1")
+    AndroidElement btnYes;
+
+    int yLeftUpCorner = firstContact.getLocation().getY();
+    int heightElement = firstContact.getSize().getHeight();
+    int widthElement = firstContact.getSize().getWidth();
+
+    TouchAction<?> touchAction = new TouchAction<>(driver);
+
     public boolean validateHeader()
     {
         return textInElementPresent(headerContactList,"Contact list",5);
@@ -35,4 +49,25 @@ public class ContactsScreen extends BaseScreen
     {
         return textInElementPresent(popUpMessage,text,time);
     }
+
+    public void goToEditScreen()
+    {
+    System.out.println("Y ==> " + firstContact.getLocation().getY());
+    System.out.println("X ==> " + firstContact.getLocation().getX());
+    System.out.println("H ==> " + firstContact.getSize().getHeight());
+    System.out.println("W ==> " + firstContact.getSize().getWidth());
+
+    touchAction.longPress(PointOption.point(widthElement/6*5, yLeftUpCorner+heightElement/2)).moveTo(PointOption.point(widthElement/6,yLeftUpCorner+heightElement/2)).release().perform();
+     }
+
+     public void deleteContact()
+     {
+        touchAction.longPress(PointOption.point(widthElement/6,yLeftUpCorner+heightElement/2)).moveTo(PointOption.point(widthElement/6*5,yLeftUpCorner+heightElement/2)).release().perform();
+     }
+
+     public void clickBtnYes()
+     {
+         clickWait(btnYes,5);
+     }
+
 }

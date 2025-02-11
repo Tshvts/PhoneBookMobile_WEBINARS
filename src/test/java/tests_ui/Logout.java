@@ -1,4 +1,5 @@
 package tests_ui;
+
 import config.AppiumConfig;
 import dto.UserDtoLombok;
 import org.testng.Assert;
@@ -6,14 +7,16 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import screens.AuthenticationScreen;
 import screens.ContactsScreen;
-import screens.DatePickerScreen;
 import screens.SplashScreen;
-public class DatePickerTests extends AppiumConfig {
+
+public class Logout extends AppiumConfig
+{
     UserDtoLombok user = UserDtoLombok.
             builder()
             .username("s3se6py31a@mail.com")
             .password("Poiuyt123!")
             .build();
+
     ContactsScreen contactsScreen;
 
     @BeforeMethod
@@ -24,15 +27,12 @@ public class DatePickerTests extends AppiumConfig {
         authenticationScreen.typeAuthenticationForm(user);
         authenticationScreen.clickLog();
         contactsScreen = new ContactsScreen(driver);
-        contactsScreen.goToDatePicker();
     }
+
     @Test
-    public void datePickerPositiveTest()
+    public void logoutPositive()
     {
-        DatePickerScreen datePickerScreen
-                = new DatePickerScreen(driver);
-        datePickerScreen.typeDate("20 March 2026");
-        datePickerScreen.clickBtnOk();
-        Assert.assertTrue(datePickerScreen.validateDate("20 February 2026"));
+        contactsScreen.logout();
+        Assert.assertTrue(new AuthenticationScreen(driver).isAuthScreenOpen());
     }
 }

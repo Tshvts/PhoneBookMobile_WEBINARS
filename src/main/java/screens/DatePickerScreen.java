@@ -5,6 +5,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.net.IDN;
 import java.time.LocalDate;
 
 
@@ -29,34 +31,49 @@ public class DatePickerScreen extends BaseScreen
     AndroidElement btnMonthPrev;
     @FindBy(id = "android:id/next")
     AndroidElement btnMonthNext;
+    @FindBy(id = "android:id/button1")
+    AndroidElement btnOk;
+    @FindBy(id = "com.sheygam.contactapp:id/dateTxt")
+    AndroidElement dateResult;
 
     public void typeDate(String date)
     {
         btnChangeDate.click();
         String[] arrayDate = date.split(" ");
         LocalDate localDate = LocalDate.now();
+
         //year==============================
         if (localDate.getYear() != Integer.parseInt(arrayDate[2]))
             btnYear.click();
+
         new WebDriverWait(driver, 5)
                 .until(ExpectedConditions.elementToBeClickable
                         (By.xpath("//*[@text='" + arrayDate[2] + "']")))
                 .click();
         btnMonthPrev.click(); // bug
+
         //month=========================================
-        if(localDate.getMonth().getValue() != numberMonth(arrayDate[1])){
-            if(numberMonth(arrayDate[1])> localDate.getMonth().getValue()){
+        if(localDate.getMonth().getValue() != numberMonth(arrayDate[1]))
+        {
+            if(numberMonth(arrayDate[1])> localDate.getMonth().getValue())
+            {
                 int num =numberMonth(arrayDate[1]) -localDate.getMonth().getValue();
                 for (int i = 0; i < num; i++) {
                     btnMonthNext.click();
                 }
-            }else{
+            }
+
+            else
+            {
                 int num = localDate.getMonth().getValue()-numberMonth(arrayDate[1]);
-                for (int i = 0; i < num; i++) {
+                for (int i = 0; i < num; i++)
+                {
                     btnMonthPrev.click();
                 }
             }
         }
+
+        driver.findElement(By.xpath("//android.view.View[@content-desc='" + date + "']")).click();
     }
 
     private int numberMonth(String month)
@@ -101,5 +118,27 @@ public class DatePickerScreen extends BaseScreen
                 break;
         }
         return m;
+    }
+
+    public void clickBtnOk()
+    {
+        clickWait(btnOk,3);
+    }
+
+    public boolean validateDate(String date)
+    {
+        String dateResultText = dateResult.getText();
+        String[] arrayDateResult = dateResultText.split("/");
+        String[] arrayDate = date.split(" ");
+
+        if(arrayDate[0].equals(arrayDateResult[0])
+                && numberMonth(arrayDate[1]) == Integer.parseInt(arrayDateResult[1])
+                && arrayDate[2].equals(arrayDateResult[2]))
+        {
+            return true;
+        }
+
+        else
+            return false;
     }
 }

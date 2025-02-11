@@ -16,18 +16,20 @@ public class ContactsScreen extends BaseScreen
 
     @FindBy(xpath = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout[1]/android.view.ViewGroup/android.widget.TextView")
     AndroidElement headerContactList;
-
     @FindBy(id = "com.sheygam.contactapp:id/add_contact_btn")
     AndroidElement btnAddContact;
-
     @FindBy(xpath = "hierarchy/android.widget.Toast")
     AndroidElement popUpMessage;
-
     @FindBy(id = "com.sheygam.contactapp:id/rowContainer")
     AndroidElement firstContact;
-
     @FindBy(id = "android:id/button1")
     AndroidElement btnYes;
+    @FindBy(xpath = "//*[@text='Logout']")
+    AndroidElement btnLogout;
+    @FindBy(xpath = "//*[@text='Date picker']")
+    AndroidElement btnDatePicker;
+    @FindBy(xpath = "//android.widget.ImageView[@content-desc='More options']")
+    AndroidElement btnMoreOptions;
 
     int yLeftUpCorner = firstContact.getLocation().getY();
     int heightElement = firstContact.getSize().getHeight();
@@ -68,6 +70,18 @@ public class ContactsScreen extends BaseScreen
      public void clickBtnYes()
      {
          clickWait(btnYes,5);
+     }
+
+     public void goToDatePicker()
+     {
+         btnMoreOptions.click();
+         clickWait(btnDatePicker,3);
+     }
+
+     public void logout()
+     {
+         clickWait(btnMoreOptions,3);
+         clickWait(btnLogout,3);
      }
 
 }
